@@ -26,7 +26,9 @@ public class UserService {
         String userId = loginRequestDto.getUserId();
         String password = loginRequestDto.getPassword();
 
-        User user = userRepository.findByUserId(userId);
+        // 사용자가 존재 여부
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
         //비밀번호 일치여부
         if (!password.equals(user.getPassword())) {
