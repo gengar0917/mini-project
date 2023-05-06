@@ -28,11 +28,6 @@ public class Quiz {
     @Column
     private String userId;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id")
-//    private User user;
-
-
     // 퀴즈 게시글 등록
     public Quiz(QuizRequestDto quizRequestDto, String userId) {
         this.title = quizRequestDto.getTitle();

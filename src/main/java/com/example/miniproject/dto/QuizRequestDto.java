@@ -17,5 +17,4 @@ public class QuizRequestDto {
     private String incorrect1;
     private String incorrect2;
     private String incorrect3;
-//    private long user_id;
 }

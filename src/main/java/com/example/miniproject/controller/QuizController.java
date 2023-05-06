@@ -59,7 +59,7 @@ public class QuizController {
     @PostMapping("/{id}/solved")
     public ResponseEntity<Void> quizSolvedComplete(@PathVariable Long quizId, Principal principal) {
         long user_id = Long.parseLong(principal.getName());
-        quizService.solvingQuiz(user_id, quizId);
+//        quizService.solvingQuiz(user_id, quizId);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .replacePath("/quiz/{id}")
                 .buildAndExpand(quizId)
