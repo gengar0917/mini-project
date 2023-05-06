@@ -21,7 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
-
+    
     public BasicResponseDto<?> signup(SignupRequestDto signupRequestDto) {
         String userId = signupRequestDto.getUserId();
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
@@ -36,7 +36,7 @@ public class UserService {
         return BasicResponseDto.setSuccess("회원 가입 완료!", null);
     }
 
-    public BasicResponseDto<?> login(LoginRequestDto loginRequestDto, HttpServletResponse httpServletResponse) {
+    public BasicResponseDto<?> login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
         String userId = loginRequestDto.getUserId();
         String password = loginRequestDto.getPassword();
 
@@ -48,9 +48,8 @@ public class UserService {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             return BasicResponseDto.setFailed("비밀번호가 일치하지 않습니다.");
         }
-
-        String token = jwtUtil.createToken(user.getUserId());
-        httpServletResponse.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
+        
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUserId()));
 
         return BasicResponseDto.setSuccess("로그인 성공!", null);
     }
