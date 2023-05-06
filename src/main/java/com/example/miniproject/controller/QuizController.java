@@ -23,7 +23,7 @@ public class QuizController {
 
     // 퀴즈 게시글 등록
     @PostMapping("/register")
-    public long register(@RequestBody QuizRequestDto quizRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public QuizResponseDto register(@RequestBody QuizRequestDto quizRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 //        String username = authentication.getName();
         return quizService.register(quizRequestDto, userDetails.getUser());
     }
