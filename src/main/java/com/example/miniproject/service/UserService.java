@@ -4,9 +4,14 @@ import com.example.miniproject.dto.LoginRequestDto;
 import com.example.miniproject.dto.SignupRequestDto;
 import com.example.miniproject.dto.BasicResponseDto;
 import com.example.miniproject.entity.User;
+import com.example.miniproject.jwt.JwtUtil;
 import com.example.miniproject.repository.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 
 @Service
@@ -14,15 +19,24 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
-    
-    public BasicResponseDto<?> signup(SignupRequestDto signupRequestDto) {
-        User user = new User(signupRequestDto);
+    private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
 
+    public BasicResponseDto<?> signup(SignupRequestDto signupRequestDto) {
+        String userId = signupRequestDto.getUserId();
+        String password = passwordEncoder.encode(signupRequestDto.getPassword());
+        Optional<User> found = userRepository.findByUserId(signupRequestDto.getUserId());
+
+        if (found.isPresent()) {
+            return BasicResponseDto.setFailed("아이디 중복");
+        }
+
+        User user = new User(userId, password);
         userRepository.save(user);
         return BasicResponseDto.setSuccess("회원 가입 완료!", null);
     }
 
-    public BasicResponseDto<?> login(LoginRequestDto loginRequestDto) {
+    public BasicResponseDto<?> login(LoginRequestDto loginRequestDto, HttpServletResponse httpServletResponse) {
         String userId = loginRequestDto.getUserId();
         String password = loginRequestDto.getPassword();
 
@@ -31,9 +45,12 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
         //비밀번호 일치여부
-        if (!password.equals(user.getPassword())) {
-            return BasicResponseDto.setFailed("로그인 실패!");
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            return BasicResponseDto.setFailed("비밀번호가 일치하지 않습니다.");
         }
+
+        String token = jwtUtil.createToken(user.getUserId());
+        httpServletResponse.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
 
         return BasicResponseDto.setSuccess("로그인 성공!", null);
     }

@@ -25,6 +25,8 @@ public class Quiz {
     private String incorrect2;
     @Column
     private String incorrect3;
+    @Column
+    private String userId;
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "user_id")
