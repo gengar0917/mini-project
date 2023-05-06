@@ -23,4 +23,5 @@ public class SolvingQuizResponseDto {
         this.answerList = answerList;
         this.userId = userId;
     }
+
 }
