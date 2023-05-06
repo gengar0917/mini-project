@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.util.StringUtils;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -66,7 +67,7 @@ public class QuizService {
 
     // 문제 해결하는 API
 //    @Transactional
-//    public MsgResponseDto solvingQuiz(long userId, long quizId, String answer, HttpServletResponse response) {
+//    public void solvingQuiz(long userId, long quizId, String answer, HttpServletResponse response) {
 //    // userId, quizId 받고
 //        Quiz quiz = quizRepository.findById(quizId).orElseThrow(()-> new ChangeSetPersister.NotFoundException("404 Quiz NOT FOUND"));
 //        SolvedQuiz solvedQuiz = solvedQuizRepository.findByUserIdAndQuizId(userId, quizId);
@@ -79,20 +80,31 @@ public class QuizService {
 //                    }
 //            response.sendRedirect("/quiz");
 //        } else {
-//
+//            response.setContentType("text/html;charset=UTF-8");
+//            PrintWriter out = response.getWriter();
+//            out.println("<script>alert('WRONG!!!')</script>");
+//            out.flush();
 //        }
-//        // redirect 문제리스트 화면
-//        // !equals면 alert : 틀렸습니다.
-//        // redirect 문제상세화면
-//
-//        //..............................................//
-//        /*
-//        solvedQuizRepository에 Query문을 적어서
-//        true count를 세는 Query를 적어서
-//
-//         */
-//
-//    }
+        // redirect 문제리스트 화면
+        // !equals면 alert : 틀렸습니다.
+        // redirect 문제상세화면
+
+        //..............................................//
+        /*
+        if (quiz.getCorrect().equals(answer)) {
+            // 정답과 equals면 setsolved(true)
+            if (!solvedQuiz.isSolved()) { // 이미 푼 문제 제외
+                        solvedQuiz.setSolved(true);
+                        quiz.setSolvedQuizCnt(solvedQuizRepository.countsolvedquiz(id));
+                        return new MsgResponseDto("이미 문제를 맞추셨습니다!");
+                    }
+        } else {
+
+        }
+
+         */
+
+    }
 
 
     // 퀴즈 게시물 수정

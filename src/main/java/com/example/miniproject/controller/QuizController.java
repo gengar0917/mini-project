@@ -9,6 +9,7 @@ import com.example.miniproject.entity.SolvedQuiz;
 import com.example.miniproject.entity.User;
 import com.example.miniproject.security.UserDetailsImpl;
 import com.example.miniproject.service.QuizService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,9 +58,10 @@ public class QuizController {
 
     // 문제 해결
     @PostMapping("/{id}/solved")
-    public ResponseEntity<Void> quizSolvedComplete(@PathVariable Long quizId, Principal principal) {
+    public ResponseEntity<Void> quizSolvedComplete(@PathVariable Long quizId, String answer, Principal principal) {
         long user_id = Long.parseLong(principal.getName());
-        quizService.solvingQuiz(user_id, quizId);
+        SolvingQuizResponseDto responseDto = new SolvingQuizResponseDto();
+        quizService.solvingQuiz(user_id, (Long) quizId, answer, (HttpServletResponse) responseDto);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .replacePath("/quiz/{id}")
                 .buildAndExpand(quizId)
