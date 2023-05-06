@@ -21,8 +21,12 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    public User(SignupRequestDto signupRequestDto) {
-        this.userId = signupRequestDto.getUserId();
-        this.password = signupRequestDto.getPassword();
+//    public User(SignupRequestDto signupRequestDto) {
+//        this.userId = signupRequestDto.getUserId();
+//        this.password = signupRequestDto.getPassword();
+//    }
+    public User(String userId, String password){
+        this.userId = userId;
+        this.password = password;
     }
 }

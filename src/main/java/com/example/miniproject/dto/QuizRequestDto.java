@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,5 +17,5 @@ public class QuizRequestDto {
     private String incorrect1;
     private String incorrect2;
     private String incorrect3;
-    private long userId;
+//    private long user_id;
 }

@@ -8,7 +8,10 @@ import com.example.miniproject.jwt.JwtUtil;
 import com.example.miniproject.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 
 @Service
@@ -17,10 +20,18 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
     
     public BasicResponseDto<?> signup(SignupRequestDto signupRequestDto) {
-        User user = new User(signupRequestDto);
+        String userId = signupRequestDto.getUserId();
+        String password = passwordEncoder.encode(signupRequestDto.getPassword());
+        Optional<User> found = userRepository.findByUserId(signupRequestDto.getUserId());
 
+        if (found.isPresent()) {
+            return BasicResponseDto.setFailed("아이디 중복");
+        }
+
+        User user = new User(userId, password);
         userRepository.save(user);
         return BasicResponseDto.setSuccess("회원 가입 완료!", null);
     }
@@ -34,10 +45,10 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
         //비밀번호 일치여부
-        if (!password.equals(user.getPassword())) {
-            return BasicResponseDto.setFailed("로그인 실패! 비밀번호가 일치하지 않습니다.");
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            return BasicResponseDto.setFailed("비밀번호가 일치하지 않습니다.");
         }
-
+        
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUserId()));
 
         return BasicResponseDto.setSuccess("로그인 성공!", null);

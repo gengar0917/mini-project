@@ -26,6 +26,5 @@ public class QuizResponseDto {
         this.incorrect1 = quiz.getIncorrect1();
         this.incorrect2 = quiz.getIncorrect2();
         this.incorrect3 = quiz.getIncorrect3();
-//        this.userId = quiz.getUser().getId();
     }
 }
