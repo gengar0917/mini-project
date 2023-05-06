@@ -4,6 +4,7 @@ import com.example.miniproject.dto.LoginRequestDto;
 import com.example.miniproject.dto.SignupRequestDto;
 import com.example.miniproject.dto.BasicResponseDto;
 import com.example.miniproject.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public BasicResponseDto<?> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse httpServletResponse) {
-        return userService.login(loginRequestDto, httpServletResponse);
+    public BasicResponseDto<?> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response ) {
+        return userService.login(loginRequestDto, response);
     }
 }
