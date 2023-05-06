@@ -15,6 +15,8 @@ public class SolvedQuiz {
     private Long id;
     @Column(nullable = false)
     private boolean solved;
+    @Column
+    private Long solvedQuizCnt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "quiz_id")
