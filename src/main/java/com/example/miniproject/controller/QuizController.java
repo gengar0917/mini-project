@@ -27,7 +27,7 @@ public class QuizController {
 
     // 전체 퀴즈 리스트
     @GetMapping
-    public List<QuizResponseDto> findAll() {
+    public BasicResponseDto<List<QuizResponseDto>> findAll() {
         return quizService.findAll();
     }
 
