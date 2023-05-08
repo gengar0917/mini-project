@@ -6,6 +6,11 @@ import com.example.miniproject.entity.SolvedQuiz;
 import com.example.miniproject.security.UserDetailsImpl;
 import com.example.miniproject.service.QuizService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,25 +48,12 @@ public class QuizController {
         return quizService.SolvedListByUser(user_id);
     }
 
-    // 문제 해결----> 동현님 방식
-//    @PostMapping("/{id}/solved")
-//    public ResponseEntity<Void> quizSolvedComplete(@PathVariable Long quizId, Principal principal) {
-//        long user_id = Long.parseLong(principal.getName());
-////        quizService.solvingQuiz(user_id, quizId);
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-//                .replacePath("/quiz/{id}")
-//                .buildAndExpand(quizId)
-//                .toUri();
-//        return ResponseEntity.status(HttpStatus.NO_CONTENT).location(location).build();
-//    }
-
-//    // 문제 해결
-//    @PostMapping("/solved/{quiz_id}")
-//    public String quizSolvedComplete(@PathVariable Long quiz_id, @RequestBody AnswerRequestDto answerRequestDto, Authentication authentication) {
-//        User user = (User) authentication.getPrincipal();
-//        return quizService.solvingQuiz(quiz_id, answerRequestDto, user);
-//    }
-
+    // 문제 해결
+    @PostMapping("/solved/{quiz_id}")
+    public String quizSolvedComplete(@PathVariable Long quiz_id, @RequestBody AnswerRequestDto answerRequestDto, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        return quizService.solvingQuiz(quiz_id, answerRequestDto, user);
+    }
 
     // 퀴즈 게시글 수정하기
     @PutMapping("/{quiz_id}")

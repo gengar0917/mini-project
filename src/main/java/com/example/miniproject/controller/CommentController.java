@@ -5,25 +5,27 @@ import com.example.miniproject.dto.CommentRequestDto;
 import com.example.miniproject.dto.CommentResponseDto;
 import com.example.miniproject.service.CommentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import com.example.miniproject.security.UserDetailsImpl;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("comment")
 public class CommentController {
 
-//    private final CommentService commentService;
+    private final CommentService commentService;
 
-//    @PostMapping("/{id}")
-//    public BasicResponseDto createComment (@RequestBody CommentRequestDto commentRequestDto, UserDetails userDetails){
-//        commentService.createComment(commentRequestDto, userDetails.g);
-//    }
-//
-//
-//    @DeleteMapping("/{id}")
-//    public BasicResponseDto deleteComment(@PathVariable Long id) {
-//        return commentService.deleteComment(id);
-//    }
+    @PostMapping("/{quiz-id}")
+    public BasicResponseDto createComment (@PathVariable(name = "quiz-id")Long id, @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return commentService.createComment(id, commentRequestDto, userDetails.getUser());
+    }
+
+
+    @DeleteMapping("/{comment-id}")
+    public BasicResponseDto deleteComment(@PathVariable(name = "comment-id") Long id) {
+        return commentService.deleteComment(id);
+    }
 
 }
