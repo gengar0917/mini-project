@@ -52,6 +52,7 @@ public class QuizService {
 
         if (solvedQuiz != null) {
             SolvingQuizResponseDto solvingQuizResponseDto = new SolvingQuizResponseDto(quiz, answerList, solvedQuiz.getSolved());
+          
             if (!solvedQuiz.getSolved()) return BasicResponseDto.setSuccess("히히 틀렸음", solvingQuizResponseDto);
             return BasicResponseDto.setSuccess("이미 맞춘 문제입니다.", solvingQuizResponseDto);
         }
@@ -72,7 +73,7 @@ public class QuizService {
         return solvedQuizRepository.selectSolvedQuiz(id);
     }
 
-    // 주관식, OX 문제해결
+    // 문제해결
     @Transactional
     public BasicResponseDto<?> solvingQuiz(Long id, AnswerRequestDto answerRequestDto, User user){
         Quiz quiz = quizRepository.findById(id).orElseThrow(
@@ -81,6 +82,7 @@ public class QuizService {
 
         SolvedQuiz existSolvedQuiz = solvedQuizRepository.findByUserIdAndQuizId(user.getId(), quiz.getId());
 
+      
         if(existSolvedQuiz != null){
             if(!existSolvedQuiz.getSolved()){
                 return BasicResponseDto.setSuccess("이미 문제를 맞추셨습니다!", null);
@@ -115,7 +117,7 @@ public class QuizService {
     @Transactional
     public BasicResponseDto<?> update(Long id, AmendRequestDto amendRequestDto, User user) {
         Quiz quiz = quizRepository.findById(id).orElseThrow(
-                () -> new NullPointerException("해당 퀴즈가 없습니다.")
+                () -> new IllegalArgumentException("해당 퀴즈가 없습니다.")
         );
 
         if(!StringUtils.equals(quiz.getId(), user.getId())) {

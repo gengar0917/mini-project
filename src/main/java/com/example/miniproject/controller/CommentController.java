@@ -16,13 +16,13 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/{quiz-id}")
-    public BasicResponseDto createComment (@PathVariable(name = "quiz-id")Long id, @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public BasicResponseDto<?> createComment (@PathVariable(name = "quiz-id")Long id, @RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return commentService.createComment(id, commentRequestDto, userDetails.getUser());
     }
 
 
     @DeleteMapping("/{comment-id}")
-    public BasicResponseDto deleteComment(@PathVariable(name = "comment-id") Long id) {
+    public BasicResponseDto<?> deleteComment(@PathVariable(name = "comment-id") Long id) {
         return commentService.deleteComment(id);
     }
 

@@ -18,7 +18,7 @@ public class CommentService {
     private final QuizRepository quizRepository;
 
     //댓글 생성
-    public BasicResponseDto createComment(Long id, CommentRequestDto commentRequestDto, User user){
+    public BasicResponseDto<?> createComment(Long id, CommentRequestDto commentRequestDto, User user){
         Quiz quiz = quizRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 퀴즈가 존재하지 않습니다."));
 
@@ -33,7 +33,7 @@ public class CommentService {
     }
 
     //댓글 삭제
-    public BasicResponseDto deleteComment(Long id) {
+    public BasicResponseDto<?> deleteComment(Long id) {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
 

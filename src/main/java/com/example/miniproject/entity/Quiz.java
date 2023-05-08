@@ -60,6 +60,7 @@ public class Quiz {
         this.content = amendRequestDto.getContent();
     }
 
+    // 연관관계 편의 메서드
     public void addComment(Comment comment) {
         commentList.add(comment);
         comment.setQuiz(this);
