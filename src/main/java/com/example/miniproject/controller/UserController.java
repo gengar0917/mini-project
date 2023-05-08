@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -19,6 +21,11 @@ public class UserController {
     @PostMapping("/signup")
     public BasicResponseDto<?> signup(@RequestBody SignupRequestDto signupRequestDto){
         return userService.signup(signupRequestDto);
+    }
+
+    @PostMapping("/signup/valid")
+    public BasicResponseDto<String> checkId(@RequestBody Map<String, String> userId){
+        return userService.checkId(userId);
     }
 
     @PostMapping("/login")

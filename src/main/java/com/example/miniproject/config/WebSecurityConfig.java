@@ -46,6 +46,7 @@ public class WebSecurityConfig {
 
         http.authorizeRequests()
                 .requestMatchers("/signup").permitAll()
+                .requestMatchers("/signup/valid").permitAll()
                 .requestMatchers("/login").permitAll()
                 //requestMatchers - url 지정, permitAll - 앞 url 허가 -> security에 걸리지 않고 넘어가게 함
                 // method 관련 에러 - .requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll() 이런 식으로 해결
