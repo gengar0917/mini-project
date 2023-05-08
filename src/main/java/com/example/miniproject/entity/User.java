@@ -1,6 +1,5 @@
 package com.example.miniproject.entity;
 
-import com.example.miniproject.dto.SignupRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

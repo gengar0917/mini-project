@@ -3,14 +3,11 @@ package com.example.miniproject.controller;
 
 import com.example.miniproject.dto.*;
 import com.example.miniproject.entity.SolvedQuiz;
+import com.example.miniproject.entity.User;
 import com.example.miniproject.security.UserDetailsImpl;
 import com.example.miniproject.service.QuizService;
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,7 +47,7 @@ public class QuizController {
 
     // 문제 해결
     @PostMapping("/solved/{quiz_id}")
-    public String quizSolvedComplete(@PathVariable Long quiz_id, @RequestBody AnswerRequestDto answerRequestDto, Authentication authentication) {
+    public BasicResponseDto<?> quizSolvedComplete(@PathVariable Long quiz_id, @RequestBody AnswerRequestDto answerRequestDto, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         return quizService.solvingQuiz(quiz_id, answerRequestDto, user);
     }
