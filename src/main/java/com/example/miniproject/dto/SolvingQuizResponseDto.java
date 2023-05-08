@@ -16,12 +16,4 @@ public class SolvingQuizResponseDto {
     private String userId;
     private boolean solved;
 
-    public SolvingQuizResponseDto(Long id, String title, String content, List<String> answerList, String userId) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.answerList = answerList;
-        this.userId = userId;
-    }
-
 }
