@@ -1,7 +1,6 @@
 package com.example.miniproject.entity;
 
 import com.example.miniproject.dto.AmendRequestDto;
-import com.example.miniproject.entity.User;
 
 import com.example.miniproject.dto.QuizRequestDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;

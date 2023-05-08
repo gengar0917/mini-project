@@ -83,9 +83,12 @@ public class QuizService {
 
         SolvedQuiz existSolvedQuiz = solvedQuizRepository.findByUserIdAndQuizId(user.getId(), quiz.getId());
 
-        if(existSolvedQuiz != null){
-            return BasicResponseDto.setFailed("이미 문제를 맞추셨습니다!");
-        }else {
+        if(existSolvedQuiz != null) {
+            if (!existSolvedQuiz.getSolved()) {
+                return BasicResponseDto.setSuccess("또할거야?", null);
+            }
+            return BasicResponseDto.setSuccess("이미 문제를 맞추셨습니다!",null);
+        } else {
             if (StringUtils.equals(quiz.getCorrect(), answerRequestDto.getAnswer())) {
                 SolvedQuiz solvedQuiz = new SolvedQuiz(user);
                 solvedQuiz.setSolved(true);
@@ -97,81 +100,19 @@ public class QuizService {
                 userRepository.save(user);
                 return BasicResponseDto.setSuccess("정답입니다~!", null);
             } else{
-                return BasicResponseDto.setFailed("틀렸습니다!");
+                // false 로직 추가
+                SolvedQuiz solvedQuiz = new SolvedQuiz(user);
+                solvedQuiz.setSolved(false);
+
+                quiz.addSolvedQuiz(solvedQuiz);
+                solvedQuizRepository.save(solvedQuiz);
+
+                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
+                userRepository.save(user);
+                return BasicResponseDto.setSuccess("틀렸습니다!", null);
             }
         }
     }
-
-    // OX 문제해결 (위와 동일하여 삭제함)
-//    @Transactional
-//    public MsgResponseDto solvingOXQuiz(Long id, String correct, User user) {
-//        // userId, quizId 받고
-//        Quiz quiz = quizRepository.findById(id).orElseThrow(
-//                () -> new IllegalArgumentException("퀴즈가 존재하지 않습니다.")
-//        );
-//
-//        SolvedQuiz existSolvedQuiz = solvedQuizRepository.findByUserIdAndQuizId(user.getUserId(), quiz.getId());
-//
-//        if(existSolvedQuiz != null) {
-//            return new MsgResponseDto("이미 문제를 맞추셨습니다!");
-//        } else{
-//            if(StringUtils.equals(quizCollectList.get(0), correct)){
-//                SolvedQuiz solvedQuiz = new SolvedQuiz(quiz, user, true);
-//                solvedQuizRepository.save(solvedQuiz);
-//                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
-//                return new MsgResponseDto("정답입니다!");
-//            } else{
-//                return new MsgResponseDto("오답입니다!");
-//            }
-//        }
-//    }
-
-//    // 객관식(4지선다) 문제해결
-//    @Transactional
-//    public BasicResponseDto<?> solvingChoiceQuiz(Long id, String correct, User user) {
-//        Quiz quiz = quizRepository.findById(id).orElseThrow(
-//                () -> new IllegalArgumentException("퀴즈가 존재하지 않습니다.")
-//        );
-//
-//        SolvedQuiz existSolvedQuiz = solvedQuizRepository.findByUserIdAndQuizId(user.getId(), quiz.getId());
-//
-//        if(existSolvedQuiz != null) {
-//            return BasicResponseDto.setFailed("이미 문제를 맞추셨습니다!");
-//        } else {
-////            int correctNum = Integer.parseInt(correct);
-//            if(correct.equals(quiz.getCorrect())){ // 인덱스번호와 누른 번호 GAP : -1
-//                SolvedQuiz solvedQuiz = new SolvedQuiz(user);
-//                solvedQuiz.setSolved(true);
-//                solvedQuizRepository.save(solvedQuiz);
-//                quizRepository.save(quiz);
-//                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
-//                userRepository.save(user);
-//                return BasicResponseDto.setSuccess("정답입니다~!", null);
-//            } else{
-//                return BasicResponseDto.setFailed("틀렸습니다!");
-//            }
-//        }
-//    }
-
-// -------------------> 동현님 방식
-//    @Transactional
-//    public String solvingQuiz(long quizId, AnswerRequestDto answerRequestDto, User user) {
-//        // userId, quizId 받고
-//        Quiz quiz = quizRepository.findById(quizId).orElseThrow(IllegalArgumentException::new);
-//        SolvedQuiz solvedQuiz = solvedQuizRepository.findByUserIdAndQuizId(user.getId(), quizId);
-//        // solvedQuiz.setSolved(true)를 위해서 정답을 json으로 입력받았을 때,
-//        if (quiz.getCorrect().equals(answerRequestDto)) {
-//            // 정답과 equals면 setsolved(true)
-//            if (!solvedQuiz.isSolved()) { // 이미 푼 문제 제외
-//                solvedQuiz.setSolved(true);
-//                solvedQuizRepository.save(solvedQuiz);
-//            }
-//            solvedQuizRepository.save(solvedQuiz);
-//            return "redirect:/quiz";
-//        } else {
-//            return "redirect:/quiz/"+quizId;
-//        }
-//    }
 
     // 퀴즈 게시물 수정
     @Transactional
