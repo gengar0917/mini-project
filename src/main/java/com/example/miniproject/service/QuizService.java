@@ -26,8 +26,6 @@ public class QuizService {
     private final SolvedQuizRepository solvedQuizRepository;
     private final UserRepository userRepository;
 
-//    public List<String> answerList = new ArrayList<>();
-
     // 퀴즈 등록
     @Transactional
     public BasicResponseDto<?> register(QuizRequestDto quizRequestDto, User user) {
@@ -43,7 +41,6 @@ public class QuizService {
     public BasicResponseDto<SolvingQuizResponseDto> findById(Long id, User user) {
         Quiz quiz = quizRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 퀴즈가 없습니다."));
         List<String> answerList = new ArrayList<>(  );
-//        answerList.clear(); // 중복으로 저장되는 것 방지
         answerList.add(quiz.getCorrect());
         if (quiz.getIncorrect1()!=null) {answerList.add(quiz.getIncorrect1());}
         if (quiz.getIncorrect2()!=null) {answerList.add(quiz.getIncorrect2());}
@@ -52,14 +49,11 @@ public class QuizService {
             Collections.shuffle(answerList);
         }
 
-//        SolvingQuizResponseDto solvingQuizResponseDto = new SolvingQuizResponseDto(id, quiz.getTitle(), quiz.getContent(), answerList, user.getUserId());
-//
-//        return BasicResponseDto.setSuccess(null, solvingQuizResponseDto);
         SolvedQuiz solvedQuiz = solvedQuizRepository.findByUserIdAndQuizId(user.getId(), id);
 
         if (solvedQuiz != null) {
             SolvingQuizResponseDto solvingQuizResponseDto = new SolvingQuizResponseDto(quiz, answerList, solvedQuiz.getSolved());
-            if (!solvedQuiz.getSolved()) return BasicResponseDto.setSuccess("틀렸음", solvingQuizResponseDto);
+            if (!solvedQuiz.getSolved()) return BasicResponseDto.setSuccess("히히 틀렸음.", solvingQuizResponseDto);
             return BasicResponseDto.setSuccess("이미 맞춘 문제입니다.", solvingQuizResponseDto);
         }
         SolvingQuizResponseDto solvingQuizResponseDto = new  SolvingQuizResponseDto(quiz, answerList, false);
@@ -80,7 +74,7 @@ public class QuizService {
         return solvedQuizRepository.selectSolvedQuiz(id);
     }
 
-    // 주관식, OX 문제해결
+    // 문제해결
     @Transactional
     public BasicResponseDto<?> solvingQuiz(Long id, AnswerRequestDto answerRequestDto, User user){
         Quiz quiz = quizRepository.findById(id).orElseThrow(
@@ -183,7 +177,7 @@ public class QuizService {
     @Transactional
     public BasicResponseDto<?> update(Long id, AmendRequestDto amendRequestDto, User user) {
         Quiz quiz = quizRepository.findById(id).orElseThrow(
-                () -> new NullPointerException("해당 퀴즈가 없습니다.")
+                () -> new IllegalArgumentException("해당 퀴즈가 없습니다.")
         );
 
         if(!StringUtils.equals(quiz.getId(), user.getId())) {
@@ -199,7 +193,7 @@ public class QuizService {
     @Transactional
     public BasicResponseDto<?> deleteAll(Long id, User user) {
         Quiz quiz = quizRepository.findById(id).orElseThrow(
-                () -> new NullPointerException("해당 퀴즈가 없습니다.")
+                () -> new IllegalArgumentException("해당 퀴즈가 없습니다.")
         );
         if(!StringUtils.equals(quiz.getId(), user.getId())) {
             return BasicResponseDto.setFailed("아이디가 같지 않습니다.!");

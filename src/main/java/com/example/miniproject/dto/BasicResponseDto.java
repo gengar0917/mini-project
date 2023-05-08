@@ -3,8 +3,6 @@ package com.example.miniproject.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Collection;
-
 @Getter
 @AllArgsConstructor
 public class BasicResponseDto<T> {
