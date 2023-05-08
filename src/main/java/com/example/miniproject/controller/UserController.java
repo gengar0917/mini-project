@@ -18,16 +18,19 @@ public class UserController {
 
     private final UserService userService;
 
+    //회원가입
     @PostMapping("/signup")
     public BasicResponseDto<?> signup(@RequestBody SignupRequestDto signupRequestDto){
         return userService.signup(signupRequestDto);
     }
 
+    //아이디 중복 확인
     @PostMapping("/signup/valid")
     public BasicResponseDto<String> checkId(@RequestBody Map<String, String> userId){
         return userService.checkId(userId);
     }
 
+    //로그인하기
     @PostMapping("/login")
     public BasicResponseDto<?> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response ) {
         return userService.login(loginRequestDto, response);

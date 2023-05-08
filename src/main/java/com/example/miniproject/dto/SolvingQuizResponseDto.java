@@ -1,7 +1,5 @@
 package com.example.miniproject.dto;
 
-
-import com.example.miniproject.entity.SolvedQuiz;
 import com.example.miniproject.entity.Quiz;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,8 +23,5 @@ public class SolvingQuizResponseDto {
         this.answerList = answerList;
         this.userId = getUserId();
         this.solved = solved;
-
-
     }
-
 }

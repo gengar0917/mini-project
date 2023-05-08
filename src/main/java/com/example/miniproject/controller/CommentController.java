@@ -2,11 +2,9 @@ package com.example.miniproject.controller;
 
 import com.example.miniproject.dto.BasicResponseDto;
 import com.example.miniproject.dto.CommentRequestDto;
-import com.example.miniproject.dto.CommentResponseDto;
 import com.example.miniproject.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import com.example.miniproject.security.UserDetailsImpl;
 

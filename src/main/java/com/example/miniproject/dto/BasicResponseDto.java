@@ -3,16 +3,12 @@ package com.example.miniproject.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Collection;
-
 @Getter
 @AllArgsConstructor
 public class BasicResponseDto<T> {
 
     private boolean success;
-
     private String message;
-
     private T data;
 
     public static <T> BasicResponseDto<T> setSuccess(String message, T data) {
@@ -22,5 +18,4 @@ public class BasicResponseDto<T> {
     public static <T> BasicResponseDto<T> setFailed(String message) {
         return new BasicResponseDto<>(false, message, null);
     }
-
 }

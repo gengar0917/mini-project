@@ -37,9 +37,4 @@ public class Comment {
     public void setQuiz(Quiz quiz) {
         this.quiz = quiz;
     }
-
-
-
-
-
 }

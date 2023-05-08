@@ -2,7 +2,6 @@ package com.example.miniproject.dto;
 
 import com.example.miniproject.entity.Comment;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 public class CommentResponseDto {
