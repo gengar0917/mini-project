@@ -39,7 +39,8 @@ public class QuizService {
     @Transactional(readOnly = true)
     public BasicResponseDto<SolvingQuizResponseDto> findById(Long id, User user) {
         Quiz quiz = quizRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 퀴즈가 없습니다."));
-        List<String> answerList = new ArrayList<>();
+        List<String> answerList = new ArrayList<>(  );
+//        answerList.clear(); // 중복으로 저장되는 것 방지
         answerList.add(quiz.getCorrect());
         if (quiz.getIncorrect1()!=null) {answerList.add(quiz.getIncorrect1());}
         if (quiz.getIncorrect2()!=null) {answerList.add(quiz.getIncorrect2());}
