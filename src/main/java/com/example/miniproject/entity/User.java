@@ -4,9 +4,11 @@ import com.example.miniproject.dto.SignupRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity(name = "users")
 @Getter
+@Setter
 @NoArgsConstructor
 public class User {
 
@@ -20,6 +22,9 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private Long solvedQuizCnt = 0L;
 
 //    public User(SignupRequestDto signupRequestDto) {
 //        this.userId = signupRequestDto.getUserId();

@@ -2,6 +2,7 @@ package com.example.miniproject.entity;
 
 import com.example.miniproject.dto.AmendRequestDto;
 import com.example.miniproject.entity.User;
+
 import com.example.miniproject.dto.QuizRequestDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -41,6 +42,10 @@ public class Quiz {
     private List<Comment> commentList = new ArrayList<>();
 
 
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)
+    private List<SolvedQuiz> solvedQuiz = new ArrayList<>();
+
+
     // 퀴즈 게시글 등록
     public Quiz(QuizRequestDto quizRequestDto, String userId) {
         this.title = quizRequestDto.getTitle();
@@ -61,5 +66,10 @@ public class Quiz {
     public void addComment(Comment comment) {
         commentList.add(comment);
         comment.setQuiz(this);
+    }
+
+    public void addSolvedQuiz(SolvedQuiz solvedQuiz) {
+        this.solvedQuiz.add(solvedQuiz);
+        solvedQuiz.setQuiz(this);
     }
 }

@@ -1,11 +1,9 @@
 package com.example.miniproject.dto;
 
-import com.example.miniproject.entity.Quiz;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
 
 @Getter
 @Setter
