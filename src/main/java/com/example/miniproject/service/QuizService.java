@@ -29,12 +29,11 @@ public class QuizService {
     // 퀴즈 등록
     @Transactional
     public BasicResponseDto<?> register(QuizRequestDto quizRequestDto, User user) {
-        quizRepository.save(new Quiz(quizRequestDto, user.getUserId()));
+        Quiz quiz = new Quiz(quizRequestDto, user.getUserId());
+        quizRepository.save(quiz);
 
-        return BasicResponseDto.setSuccess("퀴즈 등록 성공!", null);
+        return BasicResponseDto.setSuccess("퀴즈 등록 성공!", quiz.getId());
     }
-
-
 
     // 개별 퀴즈 조회
     @Transactional(readOnly = true)
@@ -53,7 +52,8 @@ public class QuizService {
 
         if (solvedQuiz != null) {
             SolvingQuizResponseDto solvingQuizResponseDto = new SolvingQuizResponseDto(quiz, answerList, solvedQuiz.getSolved());
-            if (!solvedQuiz.getSolved()) return BasicResponseDto.setSuccess("히히 틀렸음.", solvingQuizResponseDto);
+          
+            if (!solvedQuiz.getSolved()) return BasicResponseDto.setSuccess("히히 틀렸음", solvingQuizResponseDto);
             return BasicResponseDto.setSuccess("이미 맞춘 문제입니다.", solvingQuizResponseDto);
         }
         SolvingQuizResponseDto solvingQuizResponseDto = new  SolvingQuizResponseDto(quiz, answerList, false);
@@ -70,7 +70,6 @@ public class QuizService {
     // 해결한 문제 조회 -> 마이페이지로 활용하면 어떨까
     @Transactional(readOnly = true)
     public List<SolvedQuiz> SolvedListByUser(Long id) {
-
         return solvedQuizRepository.selectSolvedQuiz(id);
     }
 
@@ -83,12 +82,13 @@ public class QuizService {
 
         SolvedQuiz existSolvedQuiz = solvedQuizRepository.findByUserIdAndQuizId(user.getId(), quiz.getId());
 
-        if(existSolvedQuiz != null) {
-            if (!existSolvedQuiz.getSolved()) {
-                return BasicResponseDto.setSuccess("또할거야?", null);
+      
+        if(existSolvedQuiz != null){
+            if(!existSolvedQuiz.getSolved()){
+                return BasicResponseDto.setSuccess("이미 문제를 맞추셨습니다!", null);
             }
-            return BasicResponseDto.setSuccess("이미 문제를 맞추셨습니다!",null);
-        } else {
+            return BasicResponseDto.setSuccess("이미 문제를 맞추셨습니다!", null);
+        }else {
             if (StringUtils.equals(quiz.getCorrect(), answerRequestDto.getAnswer())) {
                 SolvedQuiz solvedQuiz = new SolvedQuiz(user);
                 solvedQuiz.setSolved(true);
@@ -100,7 +100,6 @@ public class QuizService {
                 userRepository.save(user);
                 return BasicResponseDto.setSuccess("정답입니다~!", null);
             } else{
-                // false 로직 추가
                 SolvedQuiz solvedQuiz = new SolvedQuiz(user);
                 solvedQuiz.setSolved(false);
 
@@ -126,7 +125,6 @@ public class QuizService {
         } else {
             quiz.update(amendRequestDto);
             return BasicResponseDto.setSuccess("퀴즈를 수정하였습니다.", null);
-
         }
     }
 
@@ -137,7 +135,7 @@ public class QuizService {
                 () -> new IllegalArgumentException("해당 퀴즈가 없습니다.")
         );
         if(!StringUtils.equals(quiz.getId(), user.getId())) {
-            return BasicResponseDto.setFailed("아이디가 같지 않습니다.!");
+            return BasicResponseDto.setFailed("아이디가 같지 않습니다!");
         } else {
             quizRepository.delete(quiz);
             return BasicResponseDto.setSuccess("퀴즈가 삭제되었습니다.", null);

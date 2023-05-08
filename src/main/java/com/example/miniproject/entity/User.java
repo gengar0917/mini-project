@@ -25,10 +25,6 @@ public class User {
     @Column(nullable = false)
     private Long solvedQuizCnt = 0L;
 
-//    public User(SignupRequestDto signupRequestDto) {
-//        this.userId = signupRequestDto.getUserId();
-//        this.password = signupRequestDto.getPassword();
-//    }
     public User(String userId, String password){
         this.userId = userId;
         this.password = password;

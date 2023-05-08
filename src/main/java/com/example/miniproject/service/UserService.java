@@ -10,9 +10,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import java.util.Map;
 import java.util.Optional;
-
 
 @Service
 @RequiredArgsConstructor
@@ -25,15 +24,20 @@ public class UserService {
     public BasicResponseDto<?> signup(SignupRequestDto signupRequestDto) {
         String userId = signupRequestDto.getUserId();
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
-        Optional<User> found = userRepository.findByUserId(signupRequestDto.getUserId());
-
-        if (found.isPresent()) {
-            return BasicResponseDto.setFailed("아이디 중복");
-        }
 
         User user = new User(userId, password);
         userRepository.save(user);
         return BasicResponseDto.setSuccess("회원 가입 완료!", null);
+    }
+
+    public BasicResponseDto<String> checkId(Map<String, String> userId){
+        String id = String.valueOf(userId.get("userId"));
+        Optional<User> found = userRepository.findByUserId(id);
+
+        if (found.isPresent()) {
+            return BasicResponseDto.setFailed("중복된 아이디입니다.");
+        }
+        return BasicResponseDto.setSuccess("사용 가능한 아이디입니다.", null);
     }
 
     public BasicResponseDto<?> login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
@@ -53,5 +57,4 @@ public class UserService {
 
         return BasicResponseDto.setSuccess("로그인 성공!", null);
     }
-
 }
