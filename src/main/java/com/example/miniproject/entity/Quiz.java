@@ -1,7 +1,10 @@
 package com.example.miniproject.entity;
 
 import com.example.miniproject.dto.AmendRequestDto;
+import com.example.miniproject.entity.User;
+
 import com.example.miniproject.dto.QuizRequestDto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +35,12 @@ public class Quiz {
     private String incorrect3;
     @Column
     private String userId;
+    @Column
+    private Long solvedQuizCnt;
+    @OneToMany(mappedBy = "quiz", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JsonBackReference
+    private List<Comment> commentList = new ArrayList<>();
+
 
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)
     private List<SolvedQuiz> solvedQuiz = new ArrayList<>();
@@ -52,6 +61,10 @@ public class Quiz {
     public void update(AmendRequestDto amendRequestDto) {
         this.title = amendRequestDto.getTitle();
         this.content = amendRequestDto.getContent();
+    }
 
+    public void addComment(Comment comment) {
+        commentList.add(comment);
+        comment.setQuiz(this);
     }
 }

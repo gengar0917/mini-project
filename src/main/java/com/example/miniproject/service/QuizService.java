@@ -7,6 +7,7 @@ import com.example.miniproject.entity.User;
 import com.example.miniproject.repository.QuizRepository;
 import com.example.miniproject.repository.SolvedQuizRepository;
 import com.example.miniproject.repository.UserRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,8 @@ public class QuizService {
 
         return BasicResponseDto.setSuccess("퀴즈 등록 성공!", null);
     }
+
+
 
     // 개별 퀴즈 조회
     @Transactional(readOnly = true)
@@ -72,6 +75,7 @@ public class QuizService {
     // 해결한 문제 조회 -> 마이페이지로 활용하면 어떨까
     @Transactional(readOnly = true)
     public List<SolvedQuiz> SolvedListByUser(Long id) {
+
         return solvedQuizRepository.selectSolvedQuiz(id);
     }
 
@@ -186,6 +190,7 @@ public class QuizService {
         } else {
             quiz.update(amendRequestDto);
             return BasicResponseDto.setSuccess("퀴즈를 수정하였습니다.", null);
+
         }
     }
 
