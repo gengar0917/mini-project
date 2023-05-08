@@ -54,4 +54,9 @@ public class Quiz {
         this.content = amendRequestDto.getContent();
 
     }
+
+    public void addSolvedQuiz(SolvedQuiz solvedQuiz) {
+        this.solvedQuiz.add(solvedQuiz);
+        solvedQuiz.setQuiz(this);
+    }
 }

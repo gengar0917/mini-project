@@ -64,9 +64,9 @@ public class QuizService {
 
     // 전체 퀴즈 조회
     @Transactional(readOnly = true)
-    public List<QuizResponseDto> findAll() {
+    public BasicResponseDto<List<QuizResponseDto>> findAll() {
         List<Quiz> quizzes = quizRepository.findAll();
-        return quizzes.stream().map(QuizResponseDto::new).collect(Collectors.toList());
+        return BasicResponseDto.setSuccess("전체 퀴즈 조회 성공!",quizzes.stream().map(QuizResponseDto::new).collect(Collectors.toList()));
     }
 
     // 해결한 문제 조회 -> 마이페이지로 활용하면 어떨까
