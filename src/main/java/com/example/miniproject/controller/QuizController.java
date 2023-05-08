@@ -3,6 +3,7 @@ package com.example.miniproject.controller;
 
 import com.example.miniproject.dto.*;
 import com.example.miniproject.entity.SolvedQuiz;
+import com.example.miniproject.entity.User;
 import com.example.miniproject.security.UserDetailsImpl;
 import com.example.miniproject.service.QuizService;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +51,7 @@ public class QuizController {
 
     // 문제 해결
     @PostMapping("/solved/{quiz_id}")
-    public String quizSolvedComplete(@PathVariable Long quiz_id, @RequestBody AnswerRequestDto answerRequestDto, Authentication authentication) {
+    public BasicResponseDto<?> quizSolvedComplete(@PathVariable Long quiz_id, @RequestBody AnswerRequestDto answerRequestDto, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         return quizService.solvingQuiz(quiz_id, answerRequestDto, user);
     }
