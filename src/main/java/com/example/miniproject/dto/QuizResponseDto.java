@@ -1,7 +1,6 @@
 package com.example.miniproject.dto;
 
 import com.example.miniproject.entity.Quiz;
-import com.example.miniproject.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
