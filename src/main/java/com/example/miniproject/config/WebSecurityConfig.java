@@ -39,7 +39,11 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+
+        http
+                .cors().and()
+                .csrf().disable();
+//                .httpBasic().disable();
 
         // 기본 설정인 Session 방식은 사용하지 않고 JWT 방식을 사용하기 위한 설정
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -47,6 +51,7 @@ public class WebSecurityConfig {
         http.authorizeRequests()
                 .requestMatchers("/signup").permitAll()
                 .requestMatchers("/login").permitAll()
+                .requestMatchers("/signup/valid").permitAll()
                 //requestMatchers - url 지정, permitAll - 앞 url 허가 -> security에 걸리지 않고 넘어가게 함
                 // method 관련 에러 - .requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll() 이런 식으로 해결
                 //권한 체크, 인증 등등 토큰 검사

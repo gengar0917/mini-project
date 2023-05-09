@@ -28,10 +28,11 @@ public class QuizService {
 
     // 퀴즈 등록
     @Transactional
-    public BasicResponseDto<?> register(QuizRequestDto quizRequestDto, User user) {
-        quizRepository.save(new Quiz(quizRequestDto, user.getUserId()));
+    public BasicResponseDto<Long> register(QuizRequestDto quizRequestDto, User user) {
+        Quiz quiz = new Quiz(quizRequestDto, user.getUserId());
+        quizRepository.save(quiz);
 
-        return BasicResponseDto.setSuccess("퀴즈 등록 성공!", null);
+        return BasicResponseDto.setSuccess("퀴즈 등록 성공!", quiz.getId());
     }
 
 
