@@ -40,10 +40,8 @@ public class Quiz {
     @JsonBackReference
     private List<Comment> commentList = new ArrayList<>();
 
-
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.REMOVE)
     private List<SolvedQuiz> solvedQuiz = new ArrayList<>();
-
 
     // 퀴즈 게시글 등록
     public Quiz(QuizRequestDto quizRequestDto, String userId) {

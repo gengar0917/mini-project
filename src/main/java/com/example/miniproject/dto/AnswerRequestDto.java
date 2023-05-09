@@ -7,6 +7,5 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AnswerRequestDto {
-
     private String correct;
 }
