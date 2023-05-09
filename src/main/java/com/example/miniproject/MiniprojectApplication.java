@@ -19,6 +19,7 @@ public class MiniprojectApplication {
             @Override
             public void addCorsMappings(CorsRegistry registry){
                 registry.addMapping("/**").allowedOriginPatterns("http://localhost:3000")
+                        .exposedHeaders("Authorization")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*")
                         .allowCredentials(true)
@@ -26,22 +27,4 @@ public class MiniprojectApplication {
             };
         };
     }
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/**")
-////.allowedOrigins("http://localhost:8080", "http://localhost:3000") // 스프링, 리액트 포트
-//                    .allowedOrigins("*")
-//                    .maxAge(3000)
-//                    .allowedMethods(
-//                            HttpMethod.GET.name(),
-//                            HttpMethod.HEAD.name(),
-//                            HttpMethod.POST.name(),
-//                            HttpMethod.PUT.name(),
-//                            HttpMethod.DELETE.name());
-//            }
-//        };
-//    }
 }
