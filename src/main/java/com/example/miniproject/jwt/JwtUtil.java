@@ -54,8 +54,6 @@ public class JwtUtil {
     public String createToken(String userId) {
         Date date = new Date();
 
-        //토큰을 생성하는 과정
-        //관리자인지 보통 유저인지 구분 후 작업
         return BEARER_PREFIX +
                 Jwts.builder()
                         .setSubject(userId)

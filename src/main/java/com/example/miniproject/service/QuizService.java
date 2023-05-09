@@ -35,8 +35,6 @@ public class QuizService {
         return BasicResponseDto.setSuccess("퀴즈 등록 성공!", quiz.getId());
     }
 
-
-
     // 개별 퀴즈 조회
     @Transactional(readOnly = true)
     public BasicResponseDto<SolvingQuizResponseDto> findById(Long id, User user) {
@@ -54,7 +52,8 @@ public class QuizService {
 
         if (solvedQuiz != null) {
             SolvingQuizResponseDto solvingQuizResponseDto = new SolvingQuizResponseDto(quiz, answerList, solvedQuiz.getSolved());
-            if (!solvedQuiz.getSolved()) return BasicResponseDto.setSuccess("히히 틀렸음.", solvingQuizResponseDto);
+          
+            if (!solvedQuiz.getSolved()) return BasicResponseDto.setSuccess("히히 틀렸음", solvingQuizResponseDto);
             return BasicResponseDto.setSuccess("이미 맞춘 문제입니다.", solvingQuizResponseDto);
         }
         SolvingQuizResponseDto solvingQuizResponseDto = new  SolvingQuizResponseDto(quiz, answerList, false);
@@ -71,7 +70,6 @@ public class QuizService {
     // 해결한 문제 조회 -> 마이페이지로 활용하면 어떨까
     @Transactional(readOnly = true)
     public List<SolvedQuiz> SolvedListByUser(Long id) {
-
         return solvedQuizRepository.selectSolvedQuiz(id);
     }
 
@@ -135,7 +133,6 @@ public class QuizService {
         } else {
             quiz.update(amendRequestDto);
             return BasicResponseDto.setSuccess("퀴즈를 수정하였습니다.", null);
-
         }
     }
 
@@ -145,6 +142,7 @@ public class QuizService {
         Quiz quiz = quizRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 퀴즈가 존재하지 않습니다.")
         );
+      
         if(!quiz.getUserId().equals(user.getUserId())) {
             return BasicResponseDto.setFailed("아이디가 같지 않습니다!");
         } else {

@@ -29,5 +29,4 @@ public class SolvingQuizResponseDto {
                 .map(CommentResponseDto::new)
                 .collect(Collectors.toList());
     }
-
 }

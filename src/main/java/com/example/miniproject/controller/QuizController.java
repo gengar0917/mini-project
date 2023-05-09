@@ -26,30 +26,22 @@ public class QuizController {
         return quizService.register(quizRequestDto, userDetails.getUser());
     }
 
-
     // 전체 퀴즈 리스트
     @GetMapping
     public BasicResponseDto<List<QuizResponseDto>> findAll() {
         return quizService.findAll();
     }
 
-    // 퀴즈 게시글 조회
+    // 퀴즈 게시글 상세 조회
     @GetMapping("/{quiz_id}")
     public BasicResponseDto<SolvingQuizResponseDto> findById(@PathVariable Long quiz_id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return quizService.findById(quiz_id, userDetails.getUser());
     }
 
-    // 마이페이지 (내가 해결한 문제들 조회)
+    // 마이페이지 (내가 해결한 문제들 조회) 아직 완성 안 한 기능
     @GetMapping("/solved/{id}")
     public List<SolvedQuiz> solvedQuizByUser(@PathVariable(name = "id") Long user_id) {
         return quizService.SolvedListByUser(user_id);
-    }
-
-    // 문제 해결
-    @PostMapping("/solved/{quiz_id}")
-    public BasicResponseDto<?> quizSolvedComplete(@PathVariable Long quiz_id, @RequestBody AnswerRequestDto answerRequestDto, Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
-        return quizService.solvingQuiz(quiz_id, answerRequestDto, user);
     }
 
     // 퀴즈 게시글 수정하기

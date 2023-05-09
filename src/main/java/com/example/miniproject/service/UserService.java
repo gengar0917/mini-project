@@ -10,10 +10,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.Map;
 import java.util.Optional;
-
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +24,6 @@ public class UserService {
     public BasicResponseDto<?> signup(SignupRequestDto signupRequestDto) {
         String userId = signupRequestDto.getUserId();
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
-
 
         User user = new User(userId, password);
         userRepository.save(user);
@@ -59,5 +56,4 @@ public class UserService {
 
         return BasicResponseDto.setSuccess("로그인 성공!", null);
     }
-
 }
