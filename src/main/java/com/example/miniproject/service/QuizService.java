@@ -137,8 +137,8 @@ public class QuizService {
         Quiz quiz = quizRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("해당 퀴즈가 없습니다.")
         );
-        if(!StringUtils.equals(quiz.getId(), user.getId())) {
-            return BasicResponseDto.setFailed("아이디가 같지 않습니다.!");
+        if(!quiz.getUserId().equals(user.getUserId())) {
+            return BasicResponseDto.setFailed("아이디가 같지 않습니다!");
         } else {
             quizRepository.delete(quiz);
             return BasicResponseDto.setSuccess("퀴즈가 삭제되었습니다.", null);
