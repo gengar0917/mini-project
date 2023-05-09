@@ -23,11 +23,11 @@ public class UserController {
     public BasicResponseDto<?> signup(@RequestBody SignupRequestDto signupRequestDto){
         return userService.signup(signupRequestDto);
     }
-
+  
     //아이디 중복 확인
     @PostMapping("/signup/valid")
-    public BasicResponseDto<String> checkId(@RequestBody Map<String, String> userId){
-        return userService.checkId(userId);
+    public BasicResponseDto<?> validId(@RequestBody Map<String, String> userId){
+        return userService.validId(userId);
     }
 
     //로그인하기

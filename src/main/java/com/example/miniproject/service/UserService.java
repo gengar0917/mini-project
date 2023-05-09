@@ -30,12 +30,11 @@ public class UserService {
         return BasicResponseDto.setSuccess("회원 가입 완료!", null);
     }
 
-    public BasicResponseDto<String> checkId(Map<String, String> userId){
-        String id = String.valueOf(userId.get("userId"));
-        Optional<User> found = userRepository.findByUserId(id);
+    public BasicResponseDto<?> validId(Map<String, String> userId) {
+        Optional<User> found = userRepository.findByUserId(String.valueOf(userId.get("userId")));
 
         if (found.isPresent()) {
-            return BasicResponseDto.setFailed("중복된 아이디입니다.");
+            return BasicResponseDto.setFailed("아이디 중복");
         }
         return BasicResponseDto.setSuccess("사용 가능한 아이디입니다.", null);
     }
