@@ -122,8 +122,8 @@ public class QuizService {
                 () -> new IllegalArgumentException("해당 퀴즈가 없습니다.")
         );
 
-        if(!StringUtils.equals(quiz.getId(), user.getId())) {
-            throw new IllegalArgumentException("회원을 찾을 수 없습니다.");
+        if(!quiz.getUserId().equals(user.getUserId())) {
+            throw new IllegalArgumentException("다른 회원이 작성한 퀴즈입니다.");
         } else {
             quiz.update(amendRequestDto);
             return BasicResponseDto.setSuccess("퀴즈를 수정하였습니다.", null);
