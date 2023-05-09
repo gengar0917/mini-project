@@ -11,5 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AnswerRequestDto {
 
-    private String answer;
+    private String correct;
 }

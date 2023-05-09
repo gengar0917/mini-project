@@ -40,7 +40,7 @@ public class QuizService {
     // 개별 퀴즈 조회
     @Transactional(readOnly = true)
     public BasicResponseDto<SolvingQuizResponseDto> findById(Long id, User user) {
-        Quiz quiz = quizRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 퀴즈가 없습니다."));
+        Quiz quiz = quizRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 퀴즈가 존재하지 않습니다."));
         List<String> answerList = new ArrayList<>(  );
         answerList.add(quiz.getCorrect());
         if (quiz.getIncorrect1()!=null) {answerList.add(quiz.getIncorrect1());}
@@ -79,18 +79,27 @@ public class QuizService {
     @Transactional
     public BasicResponseDto<?> solvingQuiz(Long id, AnswerRequestDto answerRequestDto, User user){
         Quiz quiz = quizRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("퀴즈가 존재하지 않습니다.")
+                () -> new IllegalArgumentException("해당 퀴즈가 존재하지 않습니다.")
         );
 
         SolvedQuiz existSolvedQuiz = solvedQuizRepository.findByUserIdAndQuizId(user.getId(), quiz.getId());
 
         if(existSolvedQuiz != null) {
-            if (!existSolvedQuiz.getSolved()) {
-                return BasicResponseDto.setSuccess("또할거야?", null);
+            if (quiz.getCorrect().equals(answerRequestDto.getCorrect())) {
+                existSolvedQuiz.setSolved(true);
+
+                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
+                userRepository.save(user);
+                return BasicResponseDto.setSuccess("정답입니다~!", null);
+            } else {
+                existSolvedQuiz.setSolved(false);
+
+                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
+                userRepository.save(user);
+                return BasicResponseDto.setSuccess("틀렸습니다!", null);
             }
-            return BasicResponseDto.setSuccess("이미 문제를 맞추셨습니다!",null);
         } else {
-            if (StringUtils.equals(quiz.getCorrect(), answerRequestDto.getAnswer())) {
+            if (StringUtils.equals(quiz.getCorrect(), answerRequestDto.getCorrect())) {
                 SolvedQuiz solvedQuiz = new SolvedQuiz(user);
                 solvedQuiz.setSolved(true);
 
@@ -101,7 +110,6 @@ public class QuizService {
                 userRepository.save(user);
                 return BasicResponseDto.setSuccess("정답입니다~!", null);
             } else{
-                // false 로직 추가
                 SolvedQuiz solvedQuiz = new SolvedQuiz(user);
                 solvedQuiz.setSolved(false);
 
@@ -119,7 +127,7 @@ public class QuizService {
     @Transactional
     public BasicResponseDto<?> update(Long id, AmendRequestDto amendRequestDto, User user) {
         Quiz quiz = quizRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("해당 퀴즈가 없습니다.")
+                () -> new IllegalArgumentException("해당 퀴즈가 존재하지 않습니다.")
         );
 
         if(!quiz.getUserId().equals(user.getUserId())) {
@@ -135,7 +143,7 @@ public class QuizService {
     @Transactional
     public BasicResponseDto<?> deleteAll(Long id, User user) {
         Quiz quiz = quizRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("해당 퀴즈가 없습니다.")
+                () -> new IllegalArgumentException("해당 퀴즈가 존재하지 않습니다.")
         );
         if(!quiz.getUserId().equals(user.getUserId())) {
             return BasicResponseDto.setFailed("아이디가 같지 않습니다!");

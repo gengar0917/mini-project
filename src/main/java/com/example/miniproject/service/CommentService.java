@@ -28,7 +28,7 @@ public class CommentService {
 
         commentRepository.save(comment);
 
-        return BasicResponseDto.setSuccess("해당 댓글에 댓글을 등록했습니다!", comment.getId());
+        return BasicResponseDto.setSuccess("댓글을 등록했습니다!", comment.getId());
     }
 
     public BasicResponseDto<?> deleteComment(Long id) {
