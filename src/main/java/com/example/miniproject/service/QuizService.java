@@ -22,7 +22,6 @@ public class QuizService {
 
     private final QuizRepository quizRepository;
     private final SolvedQuizRepository solvedQuizRepository;
-    private final UserRepository userRepository;
 
     // 퀴즈 등록
     @Transactional
