@@ -47,6 +47,8 @@ public class WebSecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
+                .requestMatchers("/swagger-ui/**").permitAll() // swagger
+                .requestMatchers("/v3/api-docs/**").permitAll() // swagger
                 .requestMatchers("/signup").permitAll()
                 .requestMatchers("/signup/valid").permitAll()
                 .requestMatchers("/login").permitAll()
