@@ -62,9 +62,15 @@ public class QuizService {
 
     // 전체 퀴즈 조회
     @Transactional(readOnly = true)
-    public BasicResponseDto<List<QuizResponseDto>> findAll() {
+    public BasicResponseDto<List<QuizResponseDto>> findAll(User user) {
         List<Quiz> quizzes = quizRepository.findAll();
-        return BasicResponseDto.setSuccess("전체 퀴즈 조회 성공!",quizzes.stream().map(QuizResponseDto::new).collect(Collectors.toList()));
+        List<QuizResponseDto> quizResponseDtos = new ArrayList<>();
+        for (Quiz quiz:quizzes) {
+            SolvedQuiz solvedQuiz = solvedQuizRepository.findByUserIdAndQuizId(user.getId(), quiz.getId());
+            if (solvedQuiz != null) quizResponseDtos.add(new QuizResponseDto(quiz, solvedQuiz.getSolved()));
+            else quizResponseDtos.add(new QuizResponseDto(quiz, false));
+        }
+        return BasicResponseDto.setSuccess("전체 퀴즈 조회 성공!",quizResponseDtos);
     }
 
     // 해결한 문제 조회 -> 마이페이지로 활용하면 어떨까
@@ -82,8 +88,9 @@ public class QuizService {
 
         SolvedQuiz existSolvedQuiz = solvedQuizRepository.findByUserIdAndQuizId(user.getId(), quiz.getId());
 
+
         if(existSolvedQuiz != null) {
-            if (quiz.getCorrect().equals(answerRequestDto.getCorrect())) {
+            if (answerRequestDto.getCorrect().equals(quiz.getCorrect())) {
                 existSolvedQuiz.setSolved(true);
 
                 user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
@@ -97,7 +104,7 @@ public class QuizService {
                 return BasicResponseDto.setSuccess("틀렸습니다!", null);
             }
         } else {
-            if (StringUtils.equals(quiz.getCorrect(), answerRequestDto.getCorrect())) {
+            if (answerRequestDto.getCorrect().equals(quiz.getCorrect())) {
                 SolvedQuiz solvedQuiz = new SolvedQuiz(user);
                 solvedQuiz.setSolved(true);
 

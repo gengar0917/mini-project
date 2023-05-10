@@ -17,7 +17,7 @@ public class QuizResponseDto {
     private String userId;
     private boolean solved;
 
-    public QuizResponseDto(Quiz quiz) {
+    public QuizResponseDto(Quiz quiz, boolean solved) {
         this.id = quiz.getId();
         this.userId = quiz.getUserId();
         this.title = quiz.getTitle();
@@ -26,5 +26,6 @@ public class QuizResponseDto {
         this.incorrect1 = quiz.getIncorrect1();
         this.incorrect2 = quiz.getIncorrect2();
         this.incorrect3 = quiz.getIncorrect3();
+        this.solved = solved;
     }
 }

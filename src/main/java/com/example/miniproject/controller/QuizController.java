@@ -28,8 +28,8 @@ public class QuizController {
 
     // 전체 퀴즈 리스트
     @GetMapping
-    public BasicResponseDto<List<QuizResponseDto>> findAll() {
-        return quizService.findAll();
+    public BasicResponseDto<List<QuizResponseDto>> findAll(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return quizService.findAll(userDetails.getUser());
     }
 
     // 퀴즈 게시글 상세 조회
@@ -60,7 +60,7 @@ public class QuizController {
     // 퀴즈 풀기
     @PostMapping("/{quiz_id}/solving")
     public BasicResponseDto<?> solvingQuiz(@PathVariable Long quiz_id, @RequestBody AnswerRequestDto answerRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-       return quizService.solvingQuiz(quiz_id, answerRequestDto, userDetails.getUser());
+        return quizService.solvingQuiz(quiz_id, answerRequestDto, userDetails.getUser());
     }
 
 }
