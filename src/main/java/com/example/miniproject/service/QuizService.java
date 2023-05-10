@@ -11,12 +11,10 @@ import com.example.miniproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -92,15 +90,15 @@ public class QuizService {
         if(existSolvedQuiz != null) {
             if (answerRequestDto.getCorrect().equals(quiz.getCorrect())) {
                 existSolvedQuiz.setSolved(true);
-
-                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
-                userRepository.save(user);
+                user.addCount();
+//                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
+//                userRepository.save(user);
                 return BasicResponseDto.setSuccess("정답입니다~!", null);
             } else {
                 existSolvedQuiz.setSolved(false);
 
-                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
-                userRepository.save(user);
+//                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
+//                userRepository.save(user);
                 return BasicResponseDto.setSuccess("틀렸습니다!", null);
             }
         } else {
@@ -111,8 +109,10 @@ public class QuizService {
                 quiz.addSolvedQuiz(solvedQuiz);
                 solvedQuizRepository.save(solvedQuiz);
 
-                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
-                userRepository.save(user);
+                user.addCount();
+
+//                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
+//                userRepository.save(user);
                 return BasicResponseDto.setSuccess("정답입니다~!", null);
             } else{
                 SolvedQuiz solvedQuiz = new SolvedQuiz(user);
@@ -120,9 +120,8 @@ public class QuizService {
 
                 quiz.addSolvedQuiz(solvedQuiz);
                 solvedQuizRepository.save(solvedQuiz);
-
-                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
-                userRepository.save(user);
+//                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
+//                userRepository.save(user);
                 return BasicResponseDto.setSuccess("틀렸습니다!", null);
             }
         }
