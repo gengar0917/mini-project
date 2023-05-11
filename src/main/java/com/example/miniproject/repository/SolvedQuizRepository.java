@@ -17,4 +17,6 @@ public interface SolvedQuizRepository extends JpaRepository<SolvedQuiz, Long> {
     @Query("select sq from SolvedQuiz sq where sq.quiz.id = :id and sq.user.id = :userId")
     SolvedQuiz findByUserIdAndQuizId(@Param("userId") Long userId, @Param("id") Long id);
 
+    List<SolvedQuiz> findAllByUserId(Long user_id);
+
 }

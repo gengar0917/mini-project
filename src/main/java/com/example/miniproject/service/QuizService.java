@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -62,10 +64,16 @@ public class QuizService {
     public BasicResponseDto<List<QuizResponseDto>> findAll(User user) {
         List<Quiz> quizzes = quizRepository.findAll();
         List<QuizResponseDto> quizResponseDtos = new ArrayList<>();
+
+        List<SolvedQuiz> triedQuizzes = solvedQuizRepository.findAllByUserId(user.getId());
+        Map<Long, Boolean> checkList = triedQuizzes.stream()
+                .collect(Collectors.toMap(
+                        i -> i.getQuiz().getId(),
+                        SolvedQuiz::getSolved)
+                );
+
         for (Quiz quiz:quizzes) {
-            SolvedQuiz solvedQuiz = solvedQuizRepository.findByUserIdAndQuizId(user.getId(), quiz.getId());
-            if (solvedQuiz != null) quizResponseDtos.add(new QuizResponseDto(quiz, solvedQuiz.getSolved()));
-            else quizResponseDtos.add(new QuizResponseDto(quiz, false));
+            quizResponseDtos.add(new QuizResponseDto(quiz, checkList.getOrDefault(quiz.getId(), false)));
         }
         return BasicResponseDto.setSuccess("전체 퀴즈 조회 성공!",quizResponseDtos);
     }
