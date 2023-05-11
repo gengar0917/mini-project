@@ -17,7 +17,8 @@ public class MiniprojectApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry){
-                registry.addMapping("/**").allowedOriginPatterns("http://localhost:3000")
+                registry.addMapping("/**").allowedOriginPatterns("http://localhost:3000",
+                                "http://undong2.s3-website.ap-northeast-2.amazonaws.com")
                         .exposedHeaders("Authorization")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*")
