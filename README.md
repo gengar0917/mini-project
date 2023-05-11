@@ -1,7 +1,7 @@
 # mini-project
 삐질걸 : 99
 - 배포 도메인 주소
-    - 도메인 주소 : ![링크](http://undong2.s3-website.ap-northeast-2.amazonaws.com/home)
+    - 도메인 주소 : [링크](http://undong2.s3-website.ap-northeast-2.amazonaws.com/home)
         
     - QR CODE
         ![PPYSICAL99.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d79a510c-a07f-4431-8b4e-67fdd1ab11b5/PPYSICAL99.png)
