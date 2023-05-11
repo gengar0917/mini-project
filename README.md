@@ -4,9 +4,9 @@
     - 도메인 주소 : [링크](http://undong2.s3-website.ap-northeast-2.amazonaws.com/home)
         
     - QR CODE
-        ![PPYSICAL99.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d79a510c-a07f-4431-8b4e-67fdd1ab11b5/PPYSICAL99.png)
-    - ![노션 링크](https://www.notion.so/625769b54ab243389a2e84a5754d860b?v=e636e1f2782f49b78a9f66b3d2d7dc52)
-    - Swagger 링크 : ![링크](http://13.125.188.38:8080/swagger-ui/index.html)
+      ![PPYSICAL99 (1).png](..%2F..%2FDownloads%2FPPYSICAL99%20%281%29.png)[링크로 넘어가기](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d79a510c-a07f-4431-8b4e-67fdd1ab11b5/PPYSICAL99.png)
+    - [링크](https://www.notion.so/625769b54ab243389a2e84a5754d860b?v=e636e1f2782f49b78a9f66b3d2d7dc52)
+    - Swagger 링크 : [링크](http://13.125.188.38:8080/swagger-ui/index.html)
         
 - 깃허브 주소
     - FE: https://github.com/Undong00/physical99_FE
