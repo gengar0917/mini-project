@@ -1,6 +1,5 @@
 package com.example.miniproject.controller;
 
-
 import com.example.miniproject.dto.*;
 import com.example.miniproject.entity.SolvedQuiz;
 import com.example.miniproject.security.UserDetailsImpl;

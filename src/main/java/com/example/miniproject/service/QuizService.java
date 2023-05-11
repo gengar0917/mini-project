@@ -6,7 +6,6 @@ import com.example.miniproject.entity.SolvedQuiz;
 import com.example.miniproject.entity.User;
 import com.example.miniproject.repository.QuizRepository;
 import com.example.miniproject.repository.SolvedQuizRepository;
-import com.example.miniproject.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
