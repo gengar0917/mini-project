@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @ControllerAdvice
 @RestController
 public class ExceptionAdvisor {
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler({ IllegalArgumentException.class })
     public BasicResponseDto<?> exceptionHandler(Exception exception) {
         String message = exception.getMessage();
         return BasicResponseDto.setFailed(message);

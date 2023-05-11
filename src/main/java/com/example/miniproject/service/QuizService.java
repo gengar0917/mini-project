@@ -6,16 +6,15 @@ import com.example.miniproject.entity.SolvedQuiz;
 import com.example.miniproject.entity.User;
 import com.example.miniproject.repository.QuizRepository;
 import com.example.miniproject.repository.SolvedQuizRepository;
-import com.example.miniproject.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,7 +23,6 @@ public class QuizService {
 
     private final QuizRepository quizRepository;
     private final SolvedQuizRepository solvedQuizRepository;
-    private final UserRepository userRepository;
 
     // 퀴즈 등록
     @Transactional
@@ -65,10 +63,16 @@ public class QuizService {
     public BasicResponseDto<List<QuizResponseDto>> findAll(User user) {
         List<Quiz> quizzes = quizRepository.findAll();
         List<QuizResponseDto> quizResponseDtos = new ArrayList<>();
+
+        List<SolvedQuiz> triedQuizzes = solvedQuizRepository.findAllByUserId(user.getId());
+        Map<Long, Boolean> checkList = triedQuizzes.stream()
+                .collect(Collectors.toMap(
+                        i -> i.getQuiz().getId(),
+                        SolvedQuiz::getSolved)
+                );
+
         for (Quiz quiz:quizzes) {
-            SolvedQuiz solvedQuiz = solvedQuizRepository.findByUserIdAndQuizId(user.getId(), quiz.getId());
-            if (solvedQuiz != null) quizResponseDtos.add(new QuizResponseDto(quiz, solvedQuiz.getSolved()));
-            else quizResponseDtos.add(new QuizResponseDto(quiz, false));
+            quizResponseDtos.add(new QuizResponseDto(quiz, checkList.getOrDefault(quiz.getId(), false)));
         }
         return BasicResponseDto.setSuccess("전체 퀴즈 조회 성공!",quizResponseDtos);
     }
@@ -92,15 +96,15 @@ public class QuizService {
         if(existSolvedQuiz != null) {
             if (answerRequestDto.getCorrect().equals(quiz.getCorrect())) {
                 existSolvedQuiz.setSolved(true);
-
-                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
-                userRepository.save(user);
+                user.addCount();
+//                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
+//                userRepository.save(user);
                 return BasicResponseDto.setSuccess("정답입니다~!", null);
             } else {
                 existSolvedQuiz.setSolved(false);
 
-                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
-                userRepository.save(user);
+//                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
+//                userRepository.save(user);
                 return BasicResponseDto.setSuccess("틀렸습니다!", null);
             }
         } else {
@@ -111,8 +115,10 @@ public class QuizService {
                 quiz.addSolvedQuiz(solvedQuiz);
                 solvedQuizRepository.save(solvedQuiz);
 
-                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
-                userRepository.save(user);
+                user.addCount();
+
+//                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
+//                userRepository.save(user);
                 return BasicResponseDto.setSuccess("정답입니다~!", null);
             } else{
                 SolvedQuiz solvedQuiz = new SolvedQuiz(user);
@@ -120,9 +126,8 @@ public class QuizService {
 
                 quiz.addSolvedQuiz(solvedQuiz);
                 solvedQuizRepository.save(solvedQuiz);
-
-                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
-                userRepository.save(user);
+//                user.setSolvedQuizCnt(solvedQuizRepository.countSolvedQuiz(user.getId()));
+//                userRepository.save(user);
                 return BasicResponseDto.setSuccess("틀렸습니다!", null);
             }
         }

@@ -29,4 +29,8 @@ public class User {
         this.userId = userId;
         this.password = password;
     }
+
+    public void addCount() {
+        this.solvedQuizCnt++;
+    }
 }
